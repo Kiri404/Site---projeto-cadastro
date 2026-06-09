@@ -92,8 +92,9 @@ include("valida.php");
             <h2>Menu</h2>
             <a href="principal.php">Início</a>
             <br>
-            <a href="cadastrarGenero.php">Cadastrar Usuário</a> <br>
-            <a href="cadastrarGenero.php">Cadastrar Gênero/Filme</a>
+            <a href="cadastrarUsuario.php">Cadastrar Usuário</a> <br>
+            <a href="cadastrarGenero.php">Cadastrar Gênero</a> <br>
+             <a href="cadastrarFilmes.php">Cadastrar Filme</a>
             
         </aside>
 
@@ -129,7 +130,21 @@ include("valida.php");
                 ?>
                             <tr>
                                 <td><?= $row['descricao']; ?></td>
-                                <td><a href="#">ALTERAR</a></td>
+                                <td>
+    <form method="post" action="alterarGenero.php" style="display:flex; gap:10px;">
+        
+        <input type="hidden"
+               name="descricao_antiga"
+               value="<?= $row['descricao']; ?>">
+
+        <input type="text"
+               name="descricao"
+               value="<?= $row['descricao']; ?>">
+
+        <input type="submit" value="Alterar">
+
+    </form>
+</td>
                                 <td>
                                     <form method="post" action="apagarGenero.php">
                                         <input type="hidden" value="<?= $row['genero']; ?>" name="genero">

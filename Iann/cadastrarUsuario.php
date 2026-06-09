@@ -93,7 +93,8 @@ include("valida.php");
             <a href="principal.php">Início</a>
             <br>
             <a href="cadastrarUsuario.php">Cadastrar Usuário</a><br>
-            <a href="cadastrarGenero.php">Cadastrar Gênero/Filme</a>
+            <a href="cadastrarGenero.php">Cadastrar Gênero</a><br>
+             <a href="cadastrarFilmes.php">Cadastrar Filme</a>
             
         </aside>
 
@@ -140,7 +141,22 @@ include("valida.php");
                                 <td><?= $cpf_val; ?></td>
                                 <td><?= $nome_val; ?></td>
                                 <td><?= $senha_val; ?></td>
-                                <td><a href="#">ALTERAR</a></td>
+<td>
+    <form method="post" action="alterarUsuario.php" style="display:flex; align-items:center; gap:10px;">
+        
+        CPF:
+        <input type="text" name="cpf" value="<?= $cpf_val; ?>" style="width:80px;">
+
+        Nome:
+        <input type="text" name="nome" value="<?= $nome_val; ?>" style="width:120px;">
+
+        Senha:
+        <input type="text" name="senha" value="<?= $senha_val; ?>" style="width:100px;">
+
+        <input type="submit" value="Alterar">
+
+    </form>
+</td>
                                 <td>
                                     <form method="post" action="apagarUsuario.php">
                                         <input type="hidden" value="<?= $cpf_val; ?>" name="cpf">

@@ -79,7 +79,8 @@ header {
             <a href="principal.php">Início</a>
             <br>
             <a href="cadastrarUsuario.php">Cadastrar Usuário</a> <br>
-            <a href="cadastrarGenero.php">Cadastrar Gênero/Filme</a>
+            <a href="cadastrarGenero.php">Cadastrar Gênero/Filme</a><br>
+            <a href="cadastrarFilmes.php">Cadastrar Filme</a>
         </aside>
 
         <section class="content">
