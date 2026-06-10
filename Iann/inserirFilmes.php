@@ -19,6 +19,9 @@ if($genero == ''){
 if($nome == ''){
     die('informe o nome');
 }
+if($ano<1900 || $ano>2026){
+    die("o ano deve estar entre 1900 e 2026");
+}
 $sql = "insert into filmes (ano,nome,genero) values (?,?,?)";
 $stmt = $conn->prepare($sql);
 

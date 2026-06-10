@@ -51,7 +51,6 @@ include("valida.php");
             padding: 20px;
         }
 
-        /* Correção da Tabela */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -80,7 +79,42 @@ include("valida.php");
         }
 
         form { margin: 0; }
+
+        /* Estilo para exibição das mensagens de erro na página */
+        .msg-erro {
+            color: #ff4d4d;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-top: 5px;
+            display: block;
+        }
     </style>
+
+    <script>
+        function validarGenero(form) {
+            // Remove mensagens de erro antigas anexadas a este formulário específico
+            var erroAnterior = form.querySelector('.msg-erro');
+            if (erroAnterior) {
+                erroAnterior.remove();
+            }
+
+            // Obtém o valor limpando espaços extras nas pontas
+            var descricaoInput = form.descricao.value.trim();
+
+            // Validação: Não pode ser vazio
+            if (descricaoInput === "") {
+                var spanErro = document.createElement('span');
+                spanErro.className = 'msg-erro';
+                spanErro.innerText = "A descrição do gênero não pode ficar vazia.";
+                
+                form.appendChild(spanErro);
+                form.descricao.focus();
+                return false; // Bloqueia o envio do formulário
+            }
+
+            return true; // Permite o envio se estiver preenchido
+        }
+    </script>
 </head>
 <body>
 
@@ -90,17 +124,22 @@ include("valida.php");
     <div class="main">
         <aside class="menu">
             <h2>Menu</h2>
-            <a href="principal.php">Início</a>
-            <br>
+            <a href="principal.php">Início</a> <br>
             <a href="cadastrarUsuario.php">Cadastrar Usuário</a> <br>
             <a href="cadastrarGenero.php">Cadastrar Gênero</a> <br>
-             <a href="cadastrarFilmes.php">Cadastrar Filme</a>
-            
+            <a href="cadastrarFilmes.php">Cadastrar Filme</a>
         </aside>
 
         <section class="content">
             <h1>Cadastro</h1>
-            <form method="post" action="InserirGenero.php">
+
+            <?php if (isset($_GET['erro'])): ?>
+                <span class="msg-erro" style="margin-bottom: 15px;">
+                    <?= htmlspecialchars($_GET['erro']); ?>
+                </span>
+            <?php endif; ?>
+
+            <form method="post" action="InserirGenero.php" onsubmit="return validarGenero(this);">
                 DESCRIÇÃO: <input type="text" name="descricao">
                 <input type="submit" value="inserir">
             </form>
@@ -129,22 +168,18 @@ include("valida.php");
                         while($row = $result->fetch_assoc()){
                 ?>
                             <tr>
-                                <td><?= $row['descricao']; ?></td>
+                                <td><?= htmlspecialchars($row['descricao']); ?></td>
                                 <td>
-    <form method="post" action="alterarGenero.php" style="display:flex; gap:10px;">
-        
-        <input type="hidden"
-               name="descricao_antiga"
-               value="<?= $row['descricao']; ?>">
-
-        <input type="text"
-               name="descricao"
-               value="<?= $row['descricao']; ?>">
-
-        <input type="submit" value="Alterar">
-
-    </form>
-</td>
+                                    <form method="post" action="alterarGenero.php" onsubmit="return validarGenero(this);" 
+                                          style="display:flex; flex-direction:column; gap:3px; align-items:flex-start;">
+                                        
+                                        <div style="display:flex; gap:10px; align-items:center;">
+                                            <input type="hidden" name="descricao_antiga" value="<?= htmlspecialchars($row['descricao']); ?>">
+                                            <input type="text" name="descricao" value="<?= htmlspecialchars($row['descricao']); ?>">
+                                            <input type="submit" value="Alterar">
+                                        </div>
+                                    </form>
+                                </td>
                                 <td>
                                     <form method="post" action="apagarGenero.php">
                                         <input type="hidden" value="<?= $row['genero']; ?>" name="genero">
@@ -155,14 +190,17 @@ include("valida.php");
                 <?php           
                         }
                     } else {
-                        echo "<tr><td colspan='5'>Nenhum dado encontrado</td></tr>";
+                        echo "<tr><td colspan='3'>Nenhum dado encontrado</td></tr>";
                     }
                 } else {
-                    echo "<tr><td colspan='5'>Erro na SQL: " . $conn->error . "</td></tr>";
+                    echo "<tr><td colspan='3'>Erro na SQL: " . $conn->error . "</td></tr>";
                 }
                 ?>
             </table>
-        </section> </div> <div style="padding: 10px; text-align: right;">
+        </section> 
+    </div> 
+    
+    <div style="padding: 10px; text-align: right;">
         <a class="sair" href="sair.php">Sair</a>
     </div>
 </div>
